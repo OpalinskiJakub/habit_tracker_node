@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= habit.name %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<h1>✅ <%= habit.name %></h1>
+
+<!-- Formularz wykonania -->
+<form action="/habits/complete/<%= habit.id %>" method="POST">
+    <label for="date">Data wykonania:</label>
+    <input type="date" name="date" required />
+    <button type="submit">Zapisz wykonanie</button>
+</form>
+
+<!-- Historia wykonania -->
+<h3>📆 Historia:</h3>
+<ul>
+    <% history.forEach(item => { %>
+        <li><%= item.date %></li>
+    <% }) %>
+</ul>
+
+<a href="/habits"><button>⬅️ Powrót do dashboardu</button></a>
+</body>
+</html>

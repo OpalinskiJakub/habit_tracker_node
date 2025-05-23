@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Statystyki</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<h1>📈 Historia nawyków</h1>
+
+<ul>
+    <% completions.forEach(c => { %>
+        <li><strong><%= c.name %></strong> – <%= c.date %></li>
+    <% }) %>
+</ul>
+
+<a href="/habits"><button>⬅️ Powrót do nawyków</button></a>
+</body>
+</html>
