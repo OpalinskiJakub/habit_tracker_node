@@ -2,7 +2,10 @@ const db = require('../models/database');
 const fs = require('fs');
 const path = require('path');
 
-// Dashboard z liczbą wykonań i ostatnią datą
+
+const basePath = `/${process.env.PORT}`;
+
+
 exports.listHabits = (req, res) => {
     db.all(`SELECT * FROM habits`, [], (err, habits) => {
         if (err) return res.status(500).send(err.message);
@@ -10,7 +13,7 @@ exports.listHabits = (req, res) => {
         const enriched = [];
 
         const getStats = (i) => {
-            if (i >= habits.length) return res.render('habits', { habits: enriched });
+            if (i >= habits.length) return res.render('habits', { habits: enriched, basePath });
 
             const h = habits[i];
             db.get(
@@ -31,7 +34,7 @@ exports.listHabits = (req, res) => {
     });
 };
 
-// Podstrona: szczegóły + historia wykonania
+
 exports.habitDetail = (req, res) => {
     const id = req.params.id;
 
@@ -40,42 +43,42 @@ exports.habitDetail = (req, res) => {
 
         db.all(`SELECT date FROM completions WHERE habit_id = ? ORDER BY date DESC`, [id], (err2, history) => {
             if (err2) return res.status(500).send(err2.message);
-            res.render('habit_detail', { habit, history });
+            res.render('habit_detail', { habit, history, basePath });
         });
     });
 };
 
-// Dodanie nowego nawyku
+
 exports.addHabit = (req, res) => {
     const name = req.body.name;
-    if (!name) return res.redirect('/habits');
+    if (!name) return res.redirect(basePath + '/habits');
 
     db.run(`INSERT INTO habits(name) VALUES(?)`, [name], () => {
-        res.redirect('/habits');
+        res.redirect(basePath + '/habits');
     });
 };
 
-// Usuwanie nawyku
+
 exports.deleteHabit = (req, res) => {
     const id = req.params.id;
     db.run(`DELETE FROM habits WHERE id = ?`, [id], () => {
         db.run(`DELETE FROM completions WHERE habit_id = ?`, [id], () => {
-            res.redirect('/habits');
+            res.redirect(basePath + '/habits');
         });
     });
 };
 
-// Zapis wykonania nawyku — wraca na podstronę
+
 exports.completeHabit = (req, res) => {
     const id = req.params.id;
     const date = req.body.date || new Date().toISOString().split('T')[0];
 
     db.run(`INSERT INTO completions(habit_id, date) VALUES(?, ?)`, [id, date], () => {
-        res.redirect(`/habits/${id}`);
+        res.redirect(`${basePath}/habits/${id}`);
     });
 };
 
-// Import JSON
+
 exports.importHabits = (req, res) => {
     const file = req.file;
     if (!file) return res.status(400).send('Brak pliku');
@@ -96,11 +99,11 @@ exports.importHabits = (req, res) => {
             db.run(`INSERT INTO completions(habit_id, date) VALUES(?, ?)`, [c.habit_id, c.date]);
         });
 
-        res.redirect('/habits');
+        res.redirect(basePath + '/habits');
     });
 };
 
-// Eksport JSON
+
 exports.exportHabits = (req, res) => {
     db.all(`SELECT * FROM habits`, [], (err, habits) => {
         if (err) return res.status(500).send(err.message);

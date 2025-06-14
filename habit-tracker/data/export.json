@@ -1,20 +1,4 @@
 {
-  "habits": [
-    {
-      "id": 5,
-      "name": "erwt"
-    }
-  ],
-  "completions": [
-    {
-      "id": 30,
-      "habit_id": 5,
-      "date": "2025-04-29"
-    },
-    {
-      "id": 31,
-      "habit_id": 5,
-      "date": "2025-05-29"
-    }
-  ]
+  "habits": [],
+  "completions": []
 }

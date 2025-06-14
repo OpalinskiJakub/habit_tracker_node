@@ -2,18 +2,16 @@
 <html>
 <head>
     <title>Habit Tracker</title>
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="<%= basePath %>/style.css" />
 </head>
 <body>
 <h1>📋 Twoje nawyki</h1>
 
-<!-- Formularz dodawania nawyku -->
-<form action="/habits/add" method="POST">
+<form action="<%= basePath %>/habits/add" method="POST">
     <input type="text" name="name" placeholder="Nazwa nawyku" required />
     <button type="submit">➕ Dodaj</button>
 </form>
 
-<!-- Lista nawyków -->
 <ul>
     <% habits.forEach(habit => { %>
         <li>
@@ -21,26 +19,25 @@
             Wykonano: <%= habit.count %> razy<br/>
             Ostatnio: <%= habit.lastDate %><br/>
 
-            <a href="/habits/<%= habit.id %>"><button>➕ Wykonaj</button></a>
+            <a href="<%= basePath %>/habits/<%= habit.id %>"><button>➕ Wykonaj</button></a>
 
-            <form action="/habits/delete/<%= habit.id %>" method="POST" style="display:inline;">
+            <form action="<%= basePath %>/habits/delete/<%= habit.id %>" method="POST" style="display:inline;">
                 <button type="submit">🗑️ Usuń</button>
             </form>
         </li>
     <% }) %>
 </ul>
 
-<!-- Import JSON -->
 <h3>📂 Import danych JSON</h3>
-<form action="/habits/import" method="POST" enctype="multipart/form-data">
+<form action="<%= basePath %>/habits/import" method="POST" enctype="multipart/form-data">
     <input type="file" name="jsonFile" accept=".json" required />
     <button type="submit">Importuj</button>
 </form>
 
-<!-- Eksport JSON -->
 <h3>💾 Eksport danych JSON</h3>
-<form action="/habits/export" method="GET">
+<form action="<%= basePath %>/habits/export" method="GET">
     <button type="submit">Eksportuj</button>
 </form>
+
 </body>
 </html>

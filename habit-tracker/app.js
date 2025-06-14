@@ -6,29 +6,30 @@ const habitsRouter = require('./routes/habits');
 const historyRouter = require('./routes/history');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Obsługa uploadu JSON (import)
+
 const upload = multer({ dest: 'uploads/' });
 app.use(upload.single('jsonFile'));
 
-// Routing
+
 app.use('/habits', habitsRouter);
 app.use('/history', historyRouter);
 
-// Strona główna przekierowuje na /habits
+
 app.get('/', (req, res) => {
-    res.redirect('/habits');
+  res.redirect('/habits');
 });
 
-// Start serwera
+
 app.listen(PORT, () => {
-    console.log(`✅ Habit Tracker running: http://localhost:${PORT}`);
+  console.log(`✅ Habit Tracker running on port ${PORT}`);
 });
