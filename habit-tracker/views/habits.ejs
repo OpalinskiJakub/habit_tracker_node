@@ -19,9 +19,12 @@
             Wykonano: <%= habit.count %> razy<br/>
             Ostatnio: <%= habit.lastDate %><br/>
 
-            <a href="<%= basePath %>/habits/<%= habit.id %>"><button>➕ Wykonaj</button></a>
+            <a href="<%= basePath %>/habits/<%= habit.id %>">
+                <button>➕ Wykonaj</button>
+            </a>
 
-            <form action="<%= basePath %>/habits/delete/<%= habit.id %>" method="POST" style="display:inline;">
+
+            <form action="<%= basePath %>/habits/<%= habit.id %>?_method=DELETE" method="POST" style="display:inline;">
                 <button type="submit">🗑️ Usuń</button>
             </form>
         </li>

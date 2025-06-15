@@ -51,10 +51,10 @@ exports.habitDetail = (req, res) => {
 
 exports.addHabit = (req, res) => {
     const name = req.body.name;
-    if (!name) return res.redirect(basePath + '/habits');
+    if (!name) return res.redirect(basePath + '/');
 
     db.run(`INSERT INTO habits(name) VALUES(?)`, [name], () => {
-        res.redirect(basePath + '/habits');
+        res.redirect(basePath + '/');
     });
 };
 
@@ -63,7 +63,7 @@ exports.deleteHabit = (req, res) => {
     const id = req.params.id;
     db.run(`DELETE FROM habits WHERE id = ?`, [id], () => {
         db.run(`DELETE FROM completions WHERE habit_id = ?`, [id], () => {
-            res.redirect(basePath + '/habits');
+            res.redirect(basePath + '/');
         });
     });
 };
@@ -99,7 +99,7 @@ exports.importHabits = (req, res) => {
             db.run(`INSERT INTO completions(habit_id, date) VALUES(?, ?)`, [c.habit_id, c.date]);
         });
 
-        res.redirect(basePath + '/habits');
+        res.redirect(basePath + '/');
     });
 };
 
